@@ -2,11 +2,11 @@
   <table class="container-table">
     <thead>
       <tr>
-        <th>
+        <th class="wTitle">
           <p>Наименование</p>
         </th>
         <th>
-          <p class="wPrice">Цена</p>
+          <p>Цена</p>
         </th>
         <th class="wAction">
           <p>Действия</p>
@@ -16,8 +16,8 @@
     <tbody>
       <tr>
         <td>Продукт1</td>
-        <td class="wPrice">333.33</td>
-        <td class="wAction">
+        <td>333.33</td>
+        <td>
           <div class="action s-b">
             <div class="keys displayNone">
               <div class="key_cell">7</div>
@@ -46,8 +46,8 @@
       </tr>
       <tr>
         <td>Продукт2</td>
-        <td class="wPrice">444.44</td>
-        <td class="wAction">
+        <td>444.44</td>
+        <td>
           <div class="action s-b">
             <CalcSvg class="calc" />
             <input type="number">
@@ -61,57 +61,9 @@
           </div>
         </td>
       </tr>
-      <tr>
-        <td>Продукт3</td>
-        <td class="wPrice">555.55</td>
-        <td class="wAction">
-          <div class="action s-b">
-            <CalcSvg class="calc" />
-            <input type="number">
-            <div class="btn-count">
-              +
-            </div>
-            <div class="btn-count minus">
-              &minus;
-            </div>
-            <CartSvg class="calc" />
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Продукт1</td>
-        <td class="wPrice">333.33</td>
-        <td class="wAction">
-          <div class="action s-b">
-            <CalcSvg class="calc" />
-            <input type="number">
-            <div class="btn-count">
-              +
-            </div>
-            <div class="btn-count minus">
-              &minus;
-            </div>
-            <CartSvg class="calc" />
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Продукт1</td>
-        <td class="wPrice">333.33</td>
-        <td class="wAction">
-          <div class="action s-b">
-            <CalcSvg class="calc" />
-            <input type="number">
-            <div class="btn-count">
-              +
-            </div>
-            <div class="btn-count minus">
-              &minus;
-            </div>
-            <CartSvg class="calc" />
-          </div>
-        </td>
-      </tr>
+
+
+
     </tbody>
   </table>
 </template>
@@ -184,12 +136,12 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-.wAction {
-  width: 400px;
+.wTitle {
+  width: 50%;
 }
 
-.wPrice {
-  width: 15%;
+.wAction {
+  width: 400px;
 }
 
 .calc {
@@ -207,7 +159,6 @@ input[type="number"]::-webkit-outer-spin-button {
   text-align: left;
   overflow: hidden;
   width: 80%;
-  margin: 0 auto;
   display: table;
   padding: 0 0 8em 0;
   color: white;

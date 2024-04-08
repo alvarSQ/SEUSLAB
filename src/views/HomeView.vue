@@ -4,13 +4,15 @@
       <button class="btn btnDefault">Каталог</button>
       <button class="btn btnDefault">Корзина (0)</button>
     </div>
-    <Catalog />
-    </div>
-    
+    <!-- <Catalog /> -->
+    <Cart />
+  </div>
+
 </template>
 
 <script setup>
 import Catalog from '@/components/Catalog.vue';
+import Cart from '@/components/Cart.vue';
 
 </script>
 
