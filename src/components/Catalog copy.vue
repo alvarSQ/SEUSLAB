@@ -14,12 +14,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="product in prodStore.getProducts" :key="product.name">
+      <tr v-for="product in products" :key="product.name">
         <td>{{ product.name }}</td>
         <td>{{ product.price }}</td>
         <td>
           <div class="action s-b">
-            <div class="keys" :class="{ displayNone: !isCalc }">
+            <div class="keys" :class="{ displayNone: !isCalc }" @click="clickCalc">
               <div class="key_cell">7</div>
               <div class="key_cell">8</div>
               <div class="key_cell">9</div>
@@ -32,21 +32,29 @@
               <div class="key_cell">0</div>
               <div class="key_cell gridSpan2"> &#9668;</div>
             </div>
-            <CalcSvg class="calc" @click="isCalc = !isCalc" @blur="isCalc = false" />
+            <CalcSvg class="calc cursor-pointer" @click="isCalc = !isCalc" @blur="isCalc = false" />
+            <template v-if="isCart">
               <div class="number">
-                <template v-for="productInCart in prodStore.getCart" :key="productInCart.name">
+                <template v-for="productInCart in cart" :key="productInCart.name">
                   <template v-if="productInCart.name === product.name">
                     {{ productInCart.quantity }}
                   </template>
+                  <template v-else-if="productInCart.quantity">
+
+                  </template>
                 </template>
               </div>
-            <div class="btn-count" @click="prodStore.plused(product.name)">
+            </template>
+            <template v-else>
+              <div class="number"></div>
+            </template>
+            <div class="btn-count cursor-pointer" @click="plused(product.name)">
               +
             </div>
-            <div class="btn-count minus" @click="prodStore.minused(product.name)">
+            <div class="btn-count minus cursor-pointer" @click="minused(product.name)">
               &minus;
             </div>
-            <CartSvg class="calc" @click="prodStore.isCart = false" />
+            <CartSvg class="calc cursor-pointer" />
           </div>
         </td>
       </tr>
@@ -57,15 +65,98 @@
 <script setup>
 import CalcSvg from './svg/calcSvg.vue'
 import CartSvg from './svg/cartSvg.vue'
-import { ref } from 'vue'
-import { useProductsStore } from '@/stores/index.js'
-const prodStore = useProductsStore()
+import { ref, computed, watch } from 'vue'
 
+const cart = ref([])
+const products = ref([
+  {
+    name: 'Продукт №1',
+    price: 111.11
+  },
+  {
+    name: 'Продукт №2',
+    price: 222.22
+  },
+  {
+    name: 'Продукт №3',
+    price: 333.33
+  },
+  {
+    name: 'Продукт №4',
+    price: 444.44
+  }
+])
 const isCalc = ref(false)
+const quantity = ref(0)
+const name = ref('Продукт №1')
+const isCart = ref(false)
+
+const plused = (name) => {
+  let obj = null
+  if (!cart.value.some(el => el.name === name)) {
+    obj = products.value.filter(el => el.name === name)
+    obj[0].quantity = 0
+    obj[0].sum = obj[0].price * obj[0].quantity
+    cart.value.push(...obj)
+  }
+  cart.value.map(el => {
+    if (el.name === name) {
+      el.quantity += 1
+    }
+  })
+}
+
+
+// const plused = (id) => {
+//   return products.value.map(el => {
+//     if (el.id === id) {
+//       el.quantity +=1
+//     }    
+//   })
+// }
+
+const minused = (name) => {
+  return products.value.map(el => {
+    if (el.quantity > 0) {
+      if (el.name === name) {
+        el.quantity = el.quantity - 1
+      }
+    }
+  })
+}
+
+const quantityed = computed(() => {
+  let obj = null
+  if (cart.value[0]) {
+    obj = cart.value.filter(el => el.name === name.value)
+    if (name.value === obj[0].name) {
+      return obj[0].quantity
+    }
+  }
+  else {
+    return 0
+  }
+  return 0
+})
+
+watch(
+  () => cart.value,
+  () => {
+    isCart.value = true
+    console.log(cart.value);
+  },
+  { deep: true }
+)
+
+
 
 </script>
 
 <style lang="scss">
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .displayNone {
   display: none !important;
 }
@@ -100,6 +191,7 @@ const isCalc = ref(false)
   grid-template-rows: repeat(4, 1fr);
 }
 
+
 .btn-count {
   display: flex;
   justify-content: center;
@@ -107,9 +199,9 @@ const isCalc = ref(false)
   width: 50px;
   height: 50px;
   font-size: 60px;
-  cursor: pointer;
   border: 1px solid white;
 }
+
 
 .action {
   position: relative;
@@ -125,6 +217,12 @@ const isCalc = ref(false)
   background-color: white;
 }
 
+// input[type="number"]::-webkit-inner-spin-button,
+// input[type="number"]::-webkit-outer-spin-button {
+//   -webkit-appearance: none;
+//   margin: 0;
+// }
+
 .wTitle {
   width: 50%;
 }
@@ -137,7 +235,6 @@ const isCalc = ref(false)
   width: 50px;
   height: 50px;
   fill: white;
-  cursor: pointer;
 }
 
 .cart {

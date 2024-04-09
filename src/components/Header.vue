@@ -3,7 +3,7 @@
     <div class="navbar">
       <div class="container">
         <div class="navbar-content">
-          <h1>Header</h1>
+          <h1>{{ prodStore.getIsCart ? 'Каталог' : 'Корзина' }}</h1>
         </div>
       </div>
     </div>
@@ -11,5 +11,6 @@
 </template>
 
 <script setup>
-
+import { useProductsStore } from '@/stores/index.js'
+const prodStore = useProductsStore()
 </script>

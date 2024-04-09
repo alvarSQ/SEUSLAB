@@ -17,51 +17,40 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Продукт1</td>
-        <td>333.33</td>
-        <td>333.33</td>
+      <tr v-for="product in prodStore.getCart" :key="product.name">
+        <td>{{ product.name }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.quantity }}</td>
         <td>
           <div class="s-b">
-            333.33 <span class="del">&#10060;</span>
+            {{ product.quantity * product.price }} <span class="del"
+              @click="prodStore.delProduct(product.name)">&#10060;</span>
           </div>
         </td>
       </tr>
-      <tr>
-        <td>Продукт1</td>
-        <td>333.33</td>
-        <td>333.33</td>
-        <td>
-          <div class="s-b">
-            333.33 <span class="del">&#10060;</span>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Продукт1</td>
-        <td>333.33</td>
-        <td>333.33</td>
-        <td>
-          <div class="s-b">
-            333.33 <span class="del">&#10060;</span>
-          </div>
-        </td>
-      </tr>
+    </tbody>
+    <tfoot>
       <tr class="itogo">
         <td></td>
         <td></td>
         <td>Итого:</td>
-        <td>24 589.36</td>
+        <td>{{ sumItogo }} руб.</td>
       </tr>
-    </tbody>
+    </tfoot>
   </table>
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { useProductsStore } from '@/stores/index.js'
+const prodStore = useProductsStore()
+
+const sumItogo = computed(() => prodStore.getCart.reduce((sum, e) => sum + (e.price * e.quantity), 0).toFixed(2))
 </script>
 
 
 <style lang="scss">
+
 .del {
   cursor: pointer;
 }
@@ -70,6 +59,4 @@
   color: #1F2739;
   background-color: #f7f7f7 !important;
 }
-
-
 </style>
