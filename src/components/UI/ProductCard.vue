@@ -19,8 +19,7 @@
           <div class="key_cell">1</div>
           <div class="key_cell">2</div>
           <div class="key_cell">3</div>
-          <div class="key_cell">0</div>
-          <div class="key_cell gridSpan2"> &lt; </div>
+          <div class="key_cell gridSpan3">0</div>
         </div>
         <div class="number">
           {{ quantityNum }}
@@ -56,19 +55,8 @@ const quantityNum = ref(0)
 const isCalc = ref(false)
 
 const calcKey = (e) => {
-  if (e.target.className !== 'keys') {
-    if (quantityNum.value === 0) {
-      quantityNum.value = String(quantityNum.value).slice(1)
-    }
-    if (e.target.innerText === '<') {
-      if (typeof (quantityNum.value) === 'number') {
-        quantityNum.value = String(quantityNum.value)
-      }
-      quantityNum.value = quantityNum.value.slice(0, -1)
-    }
-    else {
-      quantityNum.value += e.target.innerText
-    }
+  if (e.target.className !== 'keys') {    
+    quantityNum.value = Number(e.target.innerText)
   }
 }
 
@@ -85,8 +73,8 @@ const countMinus = () => {
   }
 }
 
-const onClickOutside = () => {  
-      isCalc.value = false
+const onClickOutside = () => {
+  isCalc.value = false
 }
 
 </script>
@@ -96,8 +84,8 @@ const onClickOutside = () => {
   display: none !important;
 }
 
-.gridSpan2 {
-  grid-column: span 2;
+.gridSpan3 {
+  grid-column: span 3;
 }
 
 .key_cell {
