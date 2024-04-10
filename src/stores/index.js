@@ -24,37 +24,31 @@ export const useProductsStore = defineStore('products', {
     isCart: true,
     isInCart: false
   }),
+  persist: {
+    paths: ['cart'],
+  },
   getters: {
     getProducts: state => state.products,
     getCart: state => state.cart,
     getIsCart: state => state.isCart,
     getDelProd: state => name => state.cart.filter(el => el.name !== name),
-    getQuantityNull: state => state.cart.filter(el => el.quantity !== 0),
+    getProductsByName: state => name => state.products.filter(el => el.name === name),
   },
   actions: {
-    plused(name) {
+    addProduct(name, quantity) {
       let obj = {}
-      if (!this.getCart.some(el => el.name === name)) {
-        Object.assign(obj, this.getProducts.filter(el => el.name === name)[0])
-        obj.quantity = 0
+      Object.assign(obj, this.getProductsByName(name)[0])
+      obj.quantity = quantity
+      if (!this.getCart.some(el => el.name === name)){
         this.cart.push(obj)
       }
-      this.cart.map(el => {
-        if (el.name === name) {
-          el.quantity += 1
-        }
-      })
-    },
-
-    minused(name) {
-      this.cart.map(el => {
-        if (el.quantity > 0) {
+      else {
+        this.cart.map(el => {
           if (el.name === name) {
-            el.quantity = el.quantity - 1
+            el.quantity += quantity
           }
-        }
-      })
-      this.cart = this.getQuantityNull
+        })
+      }
     },
 
     delProduct(name) {

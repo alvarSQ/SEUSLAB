@@ -14,135 +14,31 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="product in prodStore.getProducts" :key="product.name">
-        <td>{{ product.name }}</td>
-        <td>{{ product.price }}</td>
-        <td>
-          <div class="action s-b">
-            <div class="keys" :class="{ displayNone: !isCalc }">
-              <div class="key_cell">7</div>
-              <div class="key_cell">8</div>
-              <div class="key_cell">9</div>
-              <div class="key_cell">4</div>
-              <div class="key_cell">5</div>
-              <div class="key_cell">6</div>
-              <div class="key_cell">1</div>
-              <div class="key_cell">2</div>
-              <div class="key_cell">3</div>
-              <div class="key_cell">0</div>
-              <div class="key_cell gridSpan2"> &#9668;</div>
-            </div>
-            <CalcSvg class="calc" @click="isCalc = !isCalc" @blur="isCalc = false" />
-              <div class="number">
-                <template v-for="productInCart in prodStore.getCart" :key="productInCart.name">
-                  <template v-if="productInCart.name === product.name">
-                    {{ productInCart.quantity }}
-                  </template>
-                </template>
-              </div>
-            <div class="btn-count" @click="prodStore.plused(product.name)">
-              +
-            </div>
-            <div class="btn-count minus" @click="prodStore.minused(product.name)">
-              &minus;
-            </div>
-            <CartSvg class="calc" @click="prodStore.isCart = false" />
-          </div>
-        </td>
-      </tr>
+      <ProductCard v-for="product in prodStore.getProducts" :key="product.name" :name="product.name">
+        <template v-slot:name>
+          {{ product.name }}
+        </template>
+        <template v-slot:price>
+          {{ product.price }}
+        </template>
+      </ProductCard>
     </tbody>
   </table>
 </template>
 
 <script setup>
-import CalcSvg from './svg/calcSvg.vue'
-import CartSvg from './svg/cartSvg.vue'
-import { ref } from 'vue'
+import ProductCard from '@/components/UI/ProductCard.vue'
 import { useProductsStore } from '@/stores/index.js'
 const prodStore = useProductsStore()
-
-const isCalc = ref(false)
-
 </script>
 
 <style lang="scss">
-.displayNone {
-  display: none !important;
-}
-
-.gridSpan2 {
-  grid-column: span 2;
-}
-
-.key_cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  font-weight: 800;
-  cursor: pointer;
-  border: 1px solid #1F2739;
-}
-
-.keys {
-  position: absolute;
-  z-index: 2;
-  top: 50px;
-  left: 6px;
-  width: 213px;
-  height: 290px;
-  padding: 10px;
-  color: #1F2739;
-  background-color: rgb(240, 245, 255);
-  display: grid;
-  gap: 5% 5%;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(4, 1fr);
-}
-
-.btn-count {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50px;
-  height: 50px;
-  font-size: 60px;
-  cursor: pointer;
-  border: 1px solid white;
-}
-
-.action {
-  position: relative;
-}
-
-.number {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100px;
-  height: 50px;
-  color: #1F2739;
-  background-color: white;
-}
-
 .wTitle {
   width: 50%;
 }
 
 .wAction {
   width: 400px;
-}
-
-.calc {
-  width: 50px;
-  height: 50px;
-  fill: white;
-  cursor: pointer;
-}
-
-.cart {
-  width: 50px;
-  height: 50px;
 }
 
 .container-table {

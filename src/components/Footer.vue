@@ -2,10 +2,10 @@
   <footer class="footer">
     <div class="container flex-end">
       <div class="button-footer">
-        <button class="btn btnDefault btn-line" @click="inJson(), prodStore.delAll(), prodStore.isCart = true">
+        <button class="btn btnDefault btn-line" @click="inJson(); prodStore.delAll(); prodStore.isCart = true">
           Берем
         </button>
-        <button class=" btn btnDefault btn-line" @click="prodStore.delAll(), prodStore.isCart = true">
+        <button class=" btn btnDefault btn-line" @click="prodStore.delAll(); prodStore.isCart = true">
           Пожалуй откажусь
         </button>
       </div>

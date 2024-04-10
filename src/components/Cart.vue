@@ -23,7 +23,7 @@
         <td>{{ product.quantity }}</td>
         <td>
           <div class="s-b">
-            {{ product.quantity * product.price }} <span class="del"
+            {{ (product.quantity * product.price).toFixed(2) }} <span class="del"
               @click="prodStore.delProduct(product.name)">&#10060;</span>
           </div>
         </td>
