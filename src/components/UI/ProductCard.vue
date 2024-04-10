@@ -7,9 +7,9 @@
       <slot name="price" />
     </td>
     <td>
-      <div class="action s-b">
-        <CalcSvg class="calc" />
-        <div class="keys" ref="keysList" :class="{ displayNone: !isCalc }">
+      <div class="action s-b" v-click-outside="onClickOutside">
+        <CalcSvg class="calc" @click="isCalc = !isCalc" />
+        <div class="keys" ref="keysList" :class="{ displayNone: !isCalc }" @click="calcKey">
           <div class="key_cell">7</div>
           <div class="key_cell">8</div>
           <div class="key_cell">9</div>
@@ -20,7 +20,7 @@
           <div class="key_cell">2</div>
           <div class="key_cell">3</div>
           <div class="key_cell">0</div>
-          <div class="key_cell gridSpan2"> &#9668;</div>
+          <div class="key_cell gridSpan2"> &lt; </div>
         </div>
         <div class="number">
           {{ quantityNum }}
@@ -31,7 +31,7 @@
         <div class="btn-count minus" @click="countMinus">
           &minus;
         </div>
-        <CartSvg class="calc" @click="prodStore.isCart = false; prodStore.addProduct(props.name, quantityNum)" />
+        <CartSvg class="calc" @click="prodStore.addProduct(props.name, quantityNum)" />
       </div>
     </td>
   </tr>
@@ -51,9 +51,31 @@ const props = defineProps({
   }
 })
 
+const keysList = ref(null)
 const quantityNum = ref(0)
+const isCalc = ref(false)
+
+const calcKey = (e) => {
+  if (e.target.className !== 'keys') {
+    if (quantityNum.value === 0) {
+      quantityNum.value = String(quantityNum.value).slice(1)
+    }
+    if (e.target.innerText === '<') {
+      if (typeof (quantityNum.value) === 'number') {
+        quantityNum.value = String(quantityNum.value)
+      }
+      quantityNum.value = quantityNum.value.slice(0, -1)
+    }
+    else {
+      quantityNum.value += e.target.innerText
+    }
+  }
+}
 
 const countPluse = () => {
+  if (typeof (quantityNum.value) === 'string') {
+    quantityNum.value = Number(quantityNum.value)
+  }
   quantityNum.value += 1
 }
 
@@ -63,7 +85,9 @@ const countMinus = () => {
   }
 }
 
-const isCalc = ref(false)
+const onClickOutside = () => {  
+      isCalc.value = false
+}
 
 </script>
 
@@ -88,7 +112,7 @@ const isCalc = ref(false)
 
 .keys {
   position: absolute;
-  z-index: 2;
+  z-index: 1;
   top: 50px;
   left: 6px;
   width: 213px;

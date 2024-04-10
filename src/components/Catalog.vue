@@ -43,7 +43,6 @@ const prodStore = useProductsStore()
 
 .container-table {
   text-align: left;
-  overflow: hidden;
   width: 80%;
   display: table;
   padding: 0 0 8em 0;

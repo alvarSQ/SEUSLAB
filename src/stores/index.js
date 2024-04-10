@@ -36,18 +36,21 @@ export const useProductsStore = defineStore('products', {
   },
   actions: {
     addProduct(name, quantity) {
-      let obj = {}
-      Object.assign(obj, this.getProductsByName(name)[0])
-      obj.quantity = quantity
-      if (!this.getCart.some(el => el.name === name)){
-        this.cart.push(obj)
-      }
-      else {
-        this.cart.map(el => {
-          if (el.name === name) {
-            el.quantity += quantity
-          }
-        })
+      if (quantity !== 0) {
+        let obj = {}
+        Object.assign(obj, this.getProductsByName(name)[0])
+        obj.quantity = quantity
+        if (!this.getCart.some(el => el.name === name)) {
+          this.cart.push(obj)
+        }
+        else {
+          this.cart.map(el => {
+            if (el.name === name) {
+              el.quantity += quantity
+            }
+          })
+        }
+        this.isCart = false
       }
     },
 
